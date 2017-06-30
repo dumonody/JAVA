@@ -16,6 +16,34 @@ public class Account {
 		this.balance = balance;
 	}
 	
+	// 提供一个线程安全的draw()方法来完成取钱操作
+	public synchronized void draw(double drawAmount)
+	{
+		// 如果账户余额大于取钱数目
+		if(this.balance >= drawAmount)
+		{
+			// 吐出钞票
+			System.out.println(Thread.currentThread().getName()
+					+ "取钱成功!吐出钞票:" + drawAmount);	// 当前线程取钱
+			// 线程休息
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			// 修改余额
+			balance -= drawAmount;
+			System.out.println("\t 余额为: " + this.balance);
+		}
+		// 否则如果账户余额不足
+		else
+		{
+			System.out.println(Thread.currentThread().getName()
+					+ "取钱失败!余额不足!");
+		}
+	}
+	
+	
 	// 重写hashCode()
 	public int hashCode()
 	{
