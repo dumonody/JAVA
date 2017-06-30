@@ -17,24 +17,35 @@ public class DrawThread extends Thread {
 	// 当多个线程修改同一个共享数据时， 将涉及数据安全问题
 	public void run()
 	{
-		// 账户余额大于取钱数目
-		if(this.account.getBalance() >= this.drawAmount)
+		
+		/**
+		 * 修改部分, 使用同步代码块
+		 */
+		
+		
+		// 给账户对象this.account加锁, 然后再修改, 最后释放
+		// 注意这里的this.account 就是同步监视器    因为通常推荐使用可能被并发访问的共享资源充当同步监视器
+		synchronized(this.account)
 		{
-			// 吐出钞票
-			System.out.println(this.getName() + "取钱成功！吐出钞票：" + this.drawAmount);
-			
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			// 账户余额大于取钱数目
+			if(this.account.getBalance() >= this.drawAmount)
+			{
+				// 吐出钞票
+				System.out.println(this.getName() + "取钱成功！吐出钞票：" + this.drawAmount);
+				
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				// 修改余额
+				account.setBalance(account.getBalance() - drawAmount);
+				System.out.println("\t 余额为：" + account.getBalance());
 			}
-			// 修改余额
-			account.setBalance(account.getBalance() - drawAmount);
-			System.out.println("\t 余额为：" + account.getBalance());
-		}
-		else
-		{
-			System.out.println(this.getName() + "取钱失败！余额不足！");
+			else
+			{
+				System.out.println(this.getName() + "取钱失败！余额不足！");
+			}
 		}
 	}
 }
