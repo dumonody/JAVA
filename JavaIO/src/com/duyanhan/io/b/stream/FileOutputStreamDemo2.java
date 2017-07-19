@@ -25,7 +25,6 @@ public class FileOutputStreamDemo2 {
 		
 		
 		byte[] data = "追加的内容".getBytes();
-		
 		fos.write(data);
 		
 		// 注意此处：向已有文件中追加换行的写法
