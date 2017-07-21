@@ -1,18 +1,14 @@
 package cn.chatsys.dao.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.chatsys.bean.ChatHis;
 import cn.chatsys.dao.ChatHisDao;
 import cn.chatsys.dbc.BaseDao;
+import cn.chatsys.util.io.ChatContentFileUtil;
 /**
  * 
  * @author LH
@@ -50,82 +46,46 @@ public class ChatHisDaoImpl implements ChatHisDao {
 	@Override
 	public boolean doChatContentByFilepath(String filepath,String content) {
 		
-		try 
-		{ 
-		    File file = new File(filepath);
-			//调用write 方法，将字符串写入到流中 
-		    FileWriter fw = new FileWriter(file, true);//避免覆盖之前的内容
-			fw.write(content); //要写入的内容
-			fw.write("\r\n");//换行
-			//刷新流对象中的缓冲中的数据 
-			fw.flush();  
-		}
-		catch (IOException e) 
-		{  
-			e.printStackTrace();  
-		}
+		boolean flag = false;
 	
-		return true;
+		File file = new File(filepath);
+		flag = ChatContentFileUtil.appendContentToFile(file, content);
+		
+		return flag;
 	}
 
 	@Override
 	public String checkChatContentByFilepath(String filepath) {
 		
 		File file=new File(filepath);
-		Reader reader = null;
-		InputStream is=null;
-		char[] tempchars = new char[50];
-		try 
+		String ans = ChatContentFileUtil.getContentFromFile(file);
+		return ans;
+	}
+
+	@Override
+	public boolean doChatHisFileByFuid(int uid, int fid) {
+		
+		boolean flag = false;
+		
+		String filePath = "ChatHisFolder" + File.separator + uid + "_" + fid ;	// 新建路径
+		File file = new File(filePath);
+		if(!file.exists())
 		{
-            String tepstring=new String();
-            int charread = 0;
-            //由于要以字符来读取，所以需要套上字符流
-            reader = new InputStreamReader(new FileInputStream(filepath));
-            // 读入多个字符到字符数组中，charread为一次读取字符数
-            while ((charread = reader.read(tempchars)) != -1) 
-            {
-            	
-                //屏蔽掉\r不显示
-                if ((charread == tempchars.length)	
-                        && (tempchars[tempchars.length - 1] != '\r')) 
-                {
-                    tepstring=tepstring+ new String(tempchars);
-                }
-                else
-                {
-                    for (int i = 0; i < charread; i++)
-                    {
-                        if (tempchars[i] == '\r')
-                        {
-                          continue;
-                        } 
-                        else
-                        {
-                        	tepstring=tepstring+tempchars[i];
-                        }
-                    }
-                }
-                
-            }
-        }
-		catch(Exception e1)
-		{
-            e1.printStackTrace();
-        }
-		finally 
-		{
-            if (reader != null)
-            {
-                try 
-                {
-                    reader.close();
-                }
-                catch (IOException e1) 
-                {
-                	
-                }
-            }
-        }
-		return new String(tempchars);
+			String sql = "insert into ChatHis (file, uid, fid) values (?, ?, ?)";
+			List<Object> args = new ArrayList<Object>();
+			args.add(filePath);
+			args.add(uid);
+			args.add(fid);
+			flag = bs.update(sql, args);
+			// 创建文件
+			try {
+				flag = flag && file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return flag;
+		
 	}
 }

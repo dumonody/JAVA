@@ -1,8 +1,12 @@
 package cn.chatsys.util.io;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * 聊天记录文件工具类
@@ -22,23 +26,25 @@ public class ChatContentFileUtil {
 	public static boolean appendContentToFile(File file, String appendContent)
 	{
 		boolean flag = false;
-		FileOutputStream fos = null;
+		FileWriter fw = null;
+		BufferedWriter bufw = null;
 		try {
-			fos = new FileOutputStream(file, true);
-			byte[] appendData = (LINE_SEPARATOR+appendContent).getBytes("GBK");
-			fos.write(appendData);
+			fw = new FileWriter(file, true);
+			bufw = new BufferedWriter(fw);
+			bufw.write(appendContent);
+			bufw.newLine();
 			flag = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if(fos!=null)
+			if(bufw!=null)
 			{
 				try {
-					fos.close();
+					bufw.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally{
-					fos = null;
+					bufw = null;
 				}
 			}
 		}
@@ -52,7 +58,20 @@ public class ChatContentFileUtil {
 	 */
 	public static String getContentFromFile(File file)
 	{
-		String content = null;
+		String content = new String();
+		InputStreamReader isr = null;
+		BufferedReader bufr = null;
+		try {
+			isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+			bufr = new BufferedReader(isr);
+			String tmp = null;
+			while((tmp = bufr.readLine()) != null)
+			{
+				content += (tmp + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return content;
 	}
 }

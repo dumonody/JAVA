@@ -15,6 +15,14 @@ public interface ChatHisDao{
 	 */
 	public int findChatHisByFuid(int uid, int fid);
 	
+	/**
+	 * 根据当前用户id和好友id添加该好友与自己的聊天记录文件
+	 * @param uid
+	 * @param fid
+	 * @return 
+	 */
+	public boolean doChatHisFileByFuid(int uid, int fid);
+	
 	
 	/**
 	 * 根据id找到聊天记录文件路径file

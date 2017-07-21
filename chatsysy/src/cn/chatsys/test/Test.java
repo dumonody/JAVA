@@ -2,6 +2,8 @@ package cn.chatsys.test;
 
 import java.util.List;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import cn.chatsys.bean.Group;
 import cn.chatsys.bean.User;
 import cn.chatsys.bean.UserInfo;
@@ -38,16 +40,18 @@ public class Test {
 //==================GroupMemDaoImpl测试
 //		testGroupMemDaoImpl(t);
 //==================ChatHisDaoImpl测试
-//		testChatHisDaoImpl(t);
+		testChatHisDaoImpl(t);
 	}
 
 	
 //==================ChatHisDaoImpl测试===============
 	private static void testChatHisDaoImpl(Test t) {
-		t.findChatHisByFuid();
-		t.findChatHisFilepathById();
-		t.checkChatContentByFilepath();
-		t.doChatContentByFilepath();
+//		t.findChatHisByFuid();
+//		t.findChatHisFilepathById();
+//		t.doChatContentByFilepath();
+//		t.checkChatContentByFilepath();
+		t.doChatHisFileByFuid();
+		
 	}
 	public void findChatHisByFuid()
 	{
@@ -71,6 +75,12 @@ public class Test {
 	{
 		ChatHisDao chdl = new ChatHisDaoImpl();
 		boolean flag = chdl.doChatContentByFilepath("C:/Users/czkct/Desktop/test.txt","有趣的事情");
+		System.out.println(flag);
+	}
+	public void doChatHisFileByFuid()
+	{
+		ChatHisDao chdl = new ChatHisDaoImpl();
+		boolean flag = chdl.doChatHisFileByFuid(3, 4);
 		System.out.println(flag);
 	}
 //==================GroupMemDaoImpl测试===============
