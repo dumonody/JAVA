@@ -7,7 +7,7 @@ public class InputStreamReaderDemo {
 
 	public static void main(String[] args) throws Exception {
 
-		// 我们要从文件中按指定编码格式UTF-8读出字符内容，必须有个底层的字节流;
+		// 我们要从文件中按指定解码格式UTF-8读出字符内容，必须有个底层的字节流;
 		// 因为是文件，所以用FileInputStream最合适
 		FileInputStream fis = new FileInputStream("testDir\\testFile4");
 		
