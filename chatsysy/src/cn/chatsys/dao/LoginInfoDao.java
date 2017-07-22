@@ -17,4 +17,10 @@ public interface LoginInfoDao {
 	 */
 	public boolean doLoginInfo(String address,String ip,Date time,int uid);
 	
+	
+	/**
+	 * pro.du
+	 * 根据用户id查找登录信息
+	 */
+	public LoginInfo findLoginInfoByUid(int uid);
 }

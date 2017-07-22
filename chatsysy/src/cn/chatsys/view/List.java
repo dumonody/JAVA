@@ -1,5 +1,6 @@
 package cn.chatsys.view;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,9 +9,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.GroupDao;
@@ -28,7 +33,7 @@ public class List extends JFrame {
 	private JTree friendList;
 	private JTree flockList;
 
-	public List(int uid) {
+	public List(final int uid) {
 		UserInfo userinfo = new UserInfo();
 		UserInfoDao userinfodao = new UserInfoDaoImpl();
 		GroupDao groupdao = new GroupDaoImpl();
@@ -44,8 +49,11 @@ public class List extends JFrame {
 		
 		JButton headButton = new JButton("");                                         //头像按钮
 		headButton.setIcon(new ImageIcon(userinfo.getAvatarpath()));
-		headButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		headButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				new UserInfoWin(uid);
 			}
 		});
 		headButton.setBounds(14, 13, 48, 48);
@@ -58,8 +66,6 @@ public class List extends JFrame {
 		contentPane.add(nameLable);
 		
 		flockList = new JTree();
-		flockList.setName("好友列表");
-		flockList.setToolTipText("好友列表");
 		flockList.setBounds(14, 313, 214, 227);
 		contentPane.add(flockList);
 		int groupnum=groupdao.findGroupByUid(uid).size();
@@ -75,27 +81,46 @@ public class List extends JFrame {
 		//将节点添加至根节点node3
 		//node1.add(node2);
 		//创建对象接受节点
-		for(int i=1;i<=groupnum;i++)
-		{
-			DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupdao.findGroupByUid(uid).get(i-1).getGroupname());
-			node1.add(group);
-			int gid = groupdao.findGroupByUid(uid).get(i-1).getId();
-			int gnum=groupmemdao.findAllGroupMemByGid(gid).size();
-			if(gnum>0)
-			{
-				for(int j=1;j<=gnum;j++)
-				{
-					DefaultMutableTreeNode groupmem = new DefaultMutableTreeNode(groupmemdao.findAllGroupMemByGid(gid).get(j-1).getLoginName());
-					group.add(groupmem);
-				}
-			}
-		}
 		JTree friendList = new JTree(node1);
 		//设置大小
 		friendList.setBounds(14, 100, 214, 200);
 		//布局接收树对象
 		contentPane.add(friendList);
 		//JTree jtree=new JTree(node3);
+		for(int i=1;i<=groupnum;i++)
+		{
+			DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupdao.findGroupByUid(uid).get(i-1).getGroupname());
+			node1.add(group);
+			int gid = groupdao.findGroupByUid(uid).get(i-1).getId();
+			int gnum=groupmemdao.findAllGroupMemByGid(gid).size();
+			//List<DefaultMutableTreeNode> groupmem=new ArrayList<DefaultMutableTreeNode>();
+			if(gnum>0)
+			{
+				for(int j=1;j<=gnum;j++)
+				{
+					
+					final DefaultMutableTreeNode groupmem = new DefaultMutableTreeNode(groupmemdao.findAllGroupMemByGid(gid).get(j-1).getLoginName());
+					group.add(groupmem);
+				}
+			}
+		}
+		friendList.addTreeSelectionListener(new TreeSelectionListener() {
+			
+			@Override
+			public void valueChanged(TreeSelectionEvent e) {
+				//TreePath path = flockList.getPathForLocation(b, a);
+				TreeNode node=(TreeNode)e.getPath().getLastPathComponent();
+				//System.out.println(e.getPath().getPathCount());
+				if(node.isLeaf() && e.getPath().getPathCount()>2)
+				{
+					new ChatWin(uid);
+				}
+			}
+		});
+		JScrollPane scrollPane = new JScrollPane(friendList);
+		scrollPane.setBackground(Color.WHITE);
+		scrollPane.setBounds(14, 100, 214, 200);
+		contentPane.add(scrollPane);
 		
 	}
 }

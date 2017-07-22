@@ -14,11 +14,12 @@ import cn.chatsys.dbc.BaseDao;
  *
  */
 public class LoginInfoDaoImpl implements LoginInfoDao {
-
+	BaseDao base = new BaseDao();
+	
 	@Override
 	public boolean doLoginInfo(String address,String ip,Date time,int uid) {
 		boolean isFlag = false;
-		BaseDao base = new BaseDao();
+		
 		List<Object> list = new ArrayList<Object>();
 		String sql = "insert into logininfo(address, ip, time, uid) value(?,?,?,?)";//写入sql语句
 		
@@ -29,6 +30,16 @@ public class LoginInfoDaoImpl implements LoginInfoDao {
 		
 		isFlag=base.update(sql, list);//获得修改提示
 		return isFlag;
+	}
+
+	@Override
+	public LoginInfo findLoginInfoByUid(int uid) {
+		
+		List<Object> args = new ArrayList<Object>();
+		args.add(uid);
+		String sql = "select * from logininfo where uid=?";
+		LoginInfo li = (LoginInfo) base.query(sql, args, LoginInfo.class).get(0);
+		return li;
 	}
 
 }

@@ -92,9 +92,9 @@ public class Register {
 				else if(rd.register(loginName, password, password2))
 				{
 					frame.dispose();
-					Login.frame.setVisible(true);
+					LoginWin.frame.setVisible(true);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					new Login();
+					new LoginWin();
 				}
 				else
 				{
