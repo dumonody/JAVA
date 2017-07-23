@@ -105,5 +105,3 @@ public class LoginWin {
 		panel.add(registerButton);
 	}
 }
-
-// this.setBounds(1100, 20, 260, 550);主界面尺寸

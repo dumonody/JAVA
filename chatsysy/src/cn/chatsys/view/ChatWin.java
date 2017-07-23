@@ -1,6 +1,8 @@
 package cn.chatsys.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -20,12 +22,23 @@ import cn.chatsys.dao.impl.LoginInfoDaoImpl;
 import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 import cn.chatsys.util.net.Chat;
+import cn.chatsys.util.win.WindowUtil;
 
-
+/**
+ * 
+ * @author Pro.Du
+ *
+ */
 public class ChatWin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	// 聊天对象
+	private Chat chat;
+	
+	// 是否终止聊天
+	private boolean endChat = false;
 	
 	// 聊天消息发送状态
 	private boolean hasSend = false;
@@ -36,11 +49,7 @@ public class ChatWin extends JFrame {
 	public void setHasSend(boolean hasSend) {
 		this.hasSend = hasSend;
 	}
-	// 添加一个聊天实例：
-	private Chat chat;
 
-
-	
 	public JPanel getContentPane() {
 		return contentPane;
 	}
@@ -52,6 +61,17 @@ public class ChatWin extends JFrame {
 		UserInfo useri = new UserInfo();
 		UserInfoDao uind= new UserInfoDaoImpl();
 		UserDao ud = new UserDaoImpl();
+		
+		/**
+		 * pro.du
+		 * 创建聊天
+		 */
+		LoginInfoDao lid = new LoginInfoDaoImpl();
+		LoginInfo mf = lid.findLoginInfoByUid(fid);
+		this.chat = new Chat(mf, this);
+		// 聊天, 开启聊天线程
+		chat.goChat();
+		
 		
 		
 		useri=uind.findUserInfoByUid(fid);
@@ -73,10 +93,6 @@ public class ChatWin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				//这里写发送信息所实现的东西
 				ChatWin.this.hasSend = true;
-				//发送完消息后销毁textMySend里面的东西
-				
-				//功能我不怎么会，晚上写
-				
 			}
 		});
 		btnSend.setBounds(317, 514, 113, 27);
@@ -86,10 +102,17 @@ public class ChatWin extends JFrame {
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
+				ChatWin.this.endChat = true;
 				ChatWin.this.dispose();
 				//这里写整个窗口的关闭
 			}
+		});
+		// 窗口关闭
+		addWindowListener(new WindowAdapter() {  
+			public void windowClosing(WindowEvent e) {  
+				super.windowClosing(e);  
+				ChatWin.this.endChat = true;
+			}  
 		});
 		btnClose.setBounds(190, 514, 113, 27);
 		contentPane.add(btnClose);
@@ -109,19 +132,10 @@ public class ChatWin extends JFrame {
 		contentPane.add(btnHistory);
 		
 		JEditorPane editorPane = new JEditorPane();
-/**
- * pro.du
- * 添加测试内容
- */
 		editorPane.setBounds(14, 328, 416, 173);
 		contentPane.add(editorPane);
 
 		JTextArea textArea = new JTextArea();
-/**
- * pro.du
- * 添加测试内容
- */
-textArea.setText("");
 		textArea.setBounds(14, 13, 416, 263);
 		contentPane.add(textArea);
 		
@@ -154,16 +168,28 @@ textArea.setText("");
 		contentPane.add(lblNewLabel_7);
 		
 		
-		/**
-		 * pro.du
-		 * 创建聊天
-		 */
-		LoginInfoDao lid = new LoginInfoDaoImpl();
-		LoginInfo mf = lid.findLoginInfoByUid(fid);
-		chat = new Chat(mf, this);
-		// 聊天
-		chat.goChat();
+		// 关闭窗口
+		this.addWindowListener(new WindowAdapter() {  
+			  
+			  
+			public void windowClosing(WindowEvent e) {  
+				super.windowClosing(e);  
+			  
+			}  
+			  
+			});   
 		
+		
+		
+		
+		
+		
+	}
+	public boolean isEndChat() {
+		return endChat;
+	}
+	public void setEndChat(boolean endChat) {
+		this.endChat = endChat;
 	}
 }
 

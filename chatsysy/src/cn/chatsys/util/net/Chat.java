@@ -43,11 +43,20 @@ public class Chat {
 			Send send = new Send(sendSocket, this.cw, myFriendLoginInfo);
 			Receive rece = new Receive(receiveSocket, this.cw);
 			
-			// 开启任务
+			// 开启通信任务
 			Thread sendT = new Thread(send);
 			Thread receT = new Thread(rece);
 			sendT.start();
 			receT.start();
+			
+			// 开启检测任务
+			Check checkSend = new Check(sendSocket, this.cw);
+			Check checkRece = new Check(receiveSocket, this.cw);
+			Thread cS = new Thread(checkSend);
+			Thread cR = new Thread(checkRece);
+			cS.start();
+			cR.start();
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

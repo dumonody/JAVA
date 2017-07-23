@@ -35,7 +35,7 @@ public class Send implements Runnable{
 	@Override
 	public void run() {
 
-		while(true)
+		while(!cw.isEndChat())
 		{
 			// 如果发送了消息
 			if(cw.isHasSend() == true)
@@ -51,13 +51,10 @@ System.out.println("发送的消息：" + text);
 System.out.println("发送给："+ myFriendLoginInfo.getIp()+ "成功！");
 					// 下面是我现在聊天界面中的内容
 					WindowUtil.setTextArea(this.cw, "\n" + text);
+					WindowUtil.setJEditorPaneText(this.cw, "");
 				} catch (Exception e) {
 					e.printStackTrace();
-				} 
-//				finally {
-//					this.ds.close();
-//				}
-				
+				}
 				// 恢复消息发送状态
 				cw.setHasSend(false);
 			}
@@ -68,9 +65,11 @@ System.out.println("发送给："+ myFriendLoginInfo.getIp()+ "成功！");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+
 		}
-		
-		
+		System.out.println("关闭聊天,停止发送数据！");
+		this.ds.close();
+		this.ds = null;
 	}
 
 }
