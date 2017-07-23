@@ -9,6 +9,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
@@ -33,6 +34,7 @@ public class ChatWin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JScrollPane rollpane;
 	
 	// 聊天对象
 	private Chat chat;
@@ -130,14 +132,16 @@ public class ChatWin extends JFrame {
 		});
 		btnHistory.setBounds(298, 289, 132, 27);
 		contentPane.add(btnHistory);
-		
+// 发送区域	
 		JEditorPane editorPane = new JEditorPane();
 		editorPane.setBounds(14, 328, 416, 173);
 		contentPane.add(editorPane);
-
+//显示区域：添加滚动容器rollpane
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(14, 13, 416, 263);
-		contentPane.add(textArea);
+		textArea.setBounds(14, 52, 416, 263);
+		rollpane=new JScrollPane(textArea);
+		rollpane.setBounds(14, 13, 406, 253);
+		contentPane.add(rollpane);
 		
 		JLabel lblNewLabel_1 = new JLabel("昵称：");
 		lblNewLabel_1.setBounds(444, 64, 269, 32);
@@ -166,24 +170,6 @@ public class ChatWin extends JFrame {
 		JLabel lblNewLabel_7 = new JLabel("邮编：");
 		lblNewLabel_7.setBounds(444, 401, 269, 32);
 		contentPane.add(lblNewLabel_7);
-		
-		
-		// 关闭窗口
-		this.addWindowListener(new WindowAdapter() {  
-			  
-			  
-			public void windowClosing(WindowEvent e) {  
-				super.windowClosing(e);  
-			  
-			}  
-			  
-			});   
-		
-		
-		
-		
-		
-		
 	}
 	public boolean isEndChat() {
 		return endChat;

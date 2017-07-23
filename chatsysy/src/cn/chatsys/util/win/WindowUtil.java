@@ -1,10 +1,12 @@
 package cn.chatsys.util.win;
 
 import java.awt.Component;
+import java.awt.Container;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class WindowUtil {
@@ -30,7 +32,7 @@ public class WindowUtil {
 	}
 	
 	/**
-	 * 设置文本发送区的内容
+	 * 设置文本显示区的内容
 	 * @param frame
 	 * @param content
 	 */
@@ -40,14 +42,14 @@ public class WindowUtil {
 		Component[] components = p.getComponents();
 		for(Component cmpt : components)
 		{
-			if(cmpt instanceof JTextArea)
+			if(cmpt instanceof JScrollPane)
 			{
-				JTextArea textArea = (JTextArea) cmpt;
-				textArea.setText(textArea.getText() + content);
+				JTextArea textarea = (JTextArea)(((JScrollPane) cmpt).getViewport().getView());
+				textarea.setText(textarea.getText() + content);
 			}
 		}
 	}
-	
+
 	/**
 	 * 设置文本发送区的内容
 	 * @param frame

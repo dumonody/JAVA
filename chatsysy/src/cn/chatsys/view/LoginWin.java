@@ -2,6 +2,9 @@ package cn.chatsys.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -62,8 +65,6 @@ public class LoginWin {
 		JButton loginButton = new JButton("登录");
 		loginButton.setBounds(122, 174, 80, 25);
 		ActionListener l = new ActionListener() {
-
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String loginName = userText.getText();// 获得输入的账号
@@ -104,4 +105,5 @@ public class LoginWin {
 		registerButton.addActionListener(re);
 		panel.add(registerButton);
 	}
+	
 }
