@@ -12,6 +12,7 @@ public class LoginInfo {
 	private String address;//登录地址
 	private String ip;//登录ip
 	private Date time;//登录时间
+	private boolean state;	// 登录状态
 	private User user;//登录用户
 	public int getId() {
 		return id;
@@ -42,5 +43,11 @@ public class LoginInfo {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public boolean isState() {
+		return state;
+	}
+	public void setState(boolean state) {
+		this.state = state;
 	}
 }

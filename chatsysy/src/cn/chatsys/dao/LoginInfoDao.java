@@ -5,7 +5,7 @@ import java.util.Date;
 import cn.chatsys.bean.LoginInfo;
 
 /**
- * 登录信息借口
+ * 登录信息接口
  * @author moy
  *
  */
@@ -15,7 +15,7 @@ public interface LoginInfoDao {
 	 * @param loginInfo
 	 * @return
 	 */
-	public boolean doLoginInfo(String address,String ip,Date time,int uid);
+	public boolean doLoginInfo(String address,String ip,Date time,boolean state, int uid);
 	
 	
 	/**
@@ -32,5 +32,5 @@ public interface LoginInfoDao {
 	 * @param uid
 	 * @return
 	 */
-	public boolean updateLoginInfo(String address, String ip, Date time, int uid);
+	public boolean updateLoginInfo(String address, String ip, Date time, boolean state, int uid);
 }

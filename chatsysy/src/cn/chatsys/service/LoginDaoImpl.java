@@ -43,12 +43,12 @@ public class LoginDaoImpl implements LoginDao {
 			LoginInfoDao lid = new LoginInfoDaoImpl();
 			if (lid.findLoginInfoByUid(uid) != null) {
 				// 如果已经存在，则修改
-				lid.updateLoginInfo(loc, ip, time, uid);
+				lid.updateLoginInfo(loc, ip, time, true, uid);
 			}
 			else
 			{
 				// 否则添加
-				lid.doLoginInfo(loc, ip, time, uid);
+				lid.doLoginInfo(loc, ip, time, true, uid);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

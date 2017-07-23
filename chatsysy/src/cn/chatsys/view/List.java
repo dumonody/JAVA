@@ -12,6 +12,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,14 +29,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import cn.chatsys.bean.User;
+import cn.chatsys.bean.LoginInfo;
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.GroupDao;
 import cn.chatsys.dao.GroupMemDao;
+import cn.chatsys.dao.LoginInfoDao;
 import cn.chatsys.dao.UserDao;
 import cn.chatsys.dao.UserInfoDao;
 import cn.chatsys.dao.impl.GroupDaoImpl;
 import cn.chatsys.dao.impl.GroupMemDaoImpl;
+import cn.chatsys.dao.impl.LoginInfoDaoImpl;
 import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 /**
@@ -101,6 +105,18 @@ public class List extends JFrame{
         this.setVisible(true);// 窗体可见
         //this.setMaximumSize(new Dimension(400, 200));//设置最大值
         this.setMinimumSize(new Dimension(260, 400));//设置最小值
+        
+        this.addWindowListener(new WindowAdapter() {
+        	@Override
+        	public void windowClosing(WindowEvent e) {
+        		
+        		LoginInfoDao lid = new LoginInfoDaoImpl();
+        		LoginInfo li = lid.findLoginInfoByUid(FINAL_UID);
+        		lid.updateLoginInfo(li.getAddress(), li.getIp(), li.getTime(), false, li.getUser().getId());
+        		// 窗口关闭之前更新数据库
+        		super.windowClosing(e);
+        	}
+		});
 	}
 	
 	public void init(final int uid){
