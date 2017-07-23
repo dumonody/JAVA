@@ -3,8 +3,13 @@ package cn.chatsys.util.net;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-import cn.chatsys.bean.LoginInfo;
+import cn.chatsys.bean.User;
+import cn.chatsys.dao.ChatPortDao;
+import cn.chatsys.dao.LoginInfoDao;
+import cn.chatsys.dao.impl.ChatPortDaoImpl;
+import cn.chatsys.dao.impl.LoginInfoDaoImpl;
 import cn.chatsys.util.win.WindowUtil;
 import cn.chatsys.view.ChatWin;
 
@@ -14,9 +19,18 @@ import cn.chatsys.view.ChatWin;
  *
  */
 public class Send implements Runnable{
+	
+	// 用户对象
+	private User user;
 
-	// 这是我要聊天的好友的登录信息
-	private LoginInfo myFriendLoginInfo;
+	// 好友对象
+	private User friend;
+	
+	// 好友当前IP
+	private InetAddress friendIP;
+	
+	// 好友当前接收聊天信息的端口
+	private int friendRecePort;
 	
 	// 有一个用于发送的数据报包对象的引用
 	private DatagramSocket ds = null;
@@ -25,11 +39,33 @@ public class Send implements Runnable{
 	private ChatWin cw;
 	
 	// 有参构造
-	public Send(DatagramSocket ds, ChatWin cw, LoginInfo myFriendLoginInfo)
+	public Send(DatagramSocket ds, ChatWin cw, User friend, User user)
 	{
 		this.ds = ds;
 		this.cw = cw;
-		this.myFriendLoginInfo = myFriendLoginInfo;
+		this.friend = friend;
+		this.user = user;
+		
+		// 初始化发送目标的IP和端口
+		init(friend);
+	}
+
+	private void init(User friend) {
+		LoginInfoDao lid = new LoginInfoDaoImpl();
+		try {
+			this.friendIP = InetAddress.getByName(lid.findLoginInfoByUid(friend.getId()).getIp());
+		} catch (UnknownHostException e) {
+			System.out.println("用户: " + friend.getLoginName() + " 不在线！");
+			e.printStackTrace();
+		}
+		
+		ChatPortDao cpd = new ChatPortDaoImpl();
+		try {
+			this.friendRecePort = cpd.findChatPortByUidAndFid(this.friend.getId(), this.user.getId()).getReceiveport();
+		} catch (Exception e) {
+			System.out.println("用户: " + friend.getLoginName() + " 没有打开与你对话的聊天窗口！");
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -41,14 +77,15 @@ public class Send implements Runnable{
 			if(cw.isHasSend() == true)
 			{
 				String text = WindowUtil.getJEditorPaneText(this.cw);
-System.out.println("发送的消息：" + text);
+				System.out.println("发送的消息：" + text);
 				DatagramPacket dp = null;
 				byte[] buf;
 				try {
 					buf = text.getBytes("UTF-8");
-					dp = new DatagramPacket(buf, buf.length, InetAddress.getByName(myFriendLoginInfo.getIp()), 10001);
+					dp = new DatagramPacket(buf, buf.length, this.friendIP, this.friendRecePort);
 					this.ds.send(dp);
-System.out.println("发送给："+ myFriendLoginInfo.getIp()+ "成功！");
+					System.out.println("发送给："+ this.friendIP.toString() + "成功！");
+					
 					// 下面是我现在聊天界面中的内容
 					WindowUtil.setTextArea(this.cw, "\n" + text);
 					WindowUtil.setJEditorPaneText(this.cw, "");
@@ -68,8 +105,6 @@ System.out.println("发送给："+ myFriendLoginInfo.getIp()+ "成功！");
 
 		}
 		System.out.println("关闭聊天,停止发送数据！");
-		this.ds.close();
-		this.ds = null;
 	}
 
 }

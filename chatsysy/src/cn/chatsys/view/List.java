@@ -27,6 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
+import cn.chatsys.bean.User;
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.GroupDao;
 import cn.chatsys.dao.GroupMemDao;
@@ -76,7 +77,6 @@ public class List extends JFrame{
 	private List FINAL_LIST;
 	private int FINAL_UID;
 
-	
 	
 	public JPanel getJp11() {
 		return jp11;
@@ -193,7 +193,7 @@ public class List extends JFrame{
 				if(node.isLeaf() && e.getPath().getPathCount()>2)
 				{
 					int fid=userdao.findUserbyLoginName(node.toString()).getId();
-					new ChatWin(fid);
+					new ChatWin(fid, uid);
 				}
 			}
 		});

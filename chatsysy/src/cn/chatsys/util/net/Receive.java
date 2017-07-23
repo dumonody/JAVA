@@ -36,19 +36,12 @@ public class Receive implements Runnable{
 			try {
 				ds.receive(dp);
 				String text = new String(dp.getData(), 0, dp.getLength(), "UTF-8");
-				WindowUtil.setTextArea(cw, "\n" + text);;
+				WindowUtil.setTextArea(cw, "\n" + text);
 			} catch (IOException e) {
-				if(ds == null)
+				if(ds.isClosed())
 				{
-					System.out.println("ds已经为空了！");
+					System.out.println("-----调试：接收用的通信Socket对象已经关闭了！");
 				}
-			}
-			
-			try {
-				// 休息50ms
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 		System.out.println("关闭聊天,停止接收数据！");

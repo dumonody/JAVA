@@ -57,27 +57,31 @@ public class ChatWin extends JFrame {
 	}
 	/**
 	 * Create the frame.
+	 * @param uid 
 	 */
-	public ChatWin(int fid) {
-		User friend = new User();
-		UserInfo useri = new UserInfo();
-		UserInfoDao uind= new UserInfoDaoImpl();
+	public ChatWin(int fid, int uid) {
 		UserDao ud = new UserDaoImpl();
+		
+		User friend = new User();	// 好友对象
+		friend=ud.findUserById(fid);
+		
+		User user = new User();	// 用户对象
+		user = ud.findUserById(uid);
+		
 		
 		/**
 		 * pro.du
 		 * 创建聊天
 		 */
-		LoginInfoDao lid = new LoginInfoDaoImpl();
-		LoginInfo mf = lid.findLoginInfoByUid(fid);
-		this.chat = new Chat(mf, this);
+		this.chat = new Chat(friend, user, this);
 		// 聊天, 开启聊天线程
 		chat.goChat();
 		
 		
 		
+		UserInfo useri = new UserInfo();
+		UserInfoDao uind= new UserInfoDaoImpl();
 		useri=uind.findUserInfoByUid(fid);
-		friend=ud.findUserById(fid);
 		setTitle("与"+friend.getLoginName()+"交谈中...");
 		setVisible(true);
 		setBounds(300, 100, 745, 594);
