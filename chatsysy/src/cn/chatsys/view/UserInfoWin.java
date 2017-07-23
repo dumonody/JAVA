@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -31,22 +33,23 @@ public class UserInfoWin extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param list 
 	 */
-	public UserInfoWin(final int uid) {
-		UserInfo uinfo = new UserInfo();
+	public UserInfoWin(final int uid, final List list) {
+		UserInfo userinfo = new UserInfo();
 		UserInfoDao uind = new UserInfoDaoImpl();
-		uinfo=uind.findUserInfoByUid(uid);
+		userinfo=uind.findUserInfoByUid(uid);
 		
 		this.setVisible(true);
 
-		setBounds(100, 100, 554, 723);
+		setBounds(100, 100, 400, 483);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblHead = new JLabel("头像设置：");
-		lblHead.setBounds(240, 29, 75, 33);
+		lblHead.setBounds(173, 29, 75, 33);
 		contentPane.add(lblHead);
 		
 		JLabel lblInfo = new JLabel("基本信息：");
@@ -55,49 +58,59 @@ public class UserInfoWin extends JFrame {
 		contentPane.add(lblInfo);
 		
 		JButton btnHead = new JButton();
-		btnHead.setIcon(new ImageIcon(uinfo.getAvatarpath()));
+		btnHead.setIcon(new ImageIcon(userinfo.getAvatarpath()));
 		btnHead.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				UserInfoWin.this.dispose();
+				new HeadPictureWin(uid, list);
 			}
 		});
-		btnHead.setBounds(360, 13,48, 48);
+		btnHead.setBounds(255, 13, 48, 48);
 		contentPane.add(btnHead);
 		
-		JLabel labelLogin = new JLabel("昵称："+uinfo.getId());
-		labelLogin.setBounds(14, 111, 166, 33);
+		JLabel labelLogin = new JLabel("昵称："+userinfo.getNickname());
+		labelLogin.setBounds(14, 93, 166, 33);
 		contentPane.add(labelLogin);
 		
-		JLabel lblAge = new JLabel("年龄："+uinfo.getAge());
-		lblAge.setBounds(14, 207, 166, 41);
+		JLabel lblAge = new JLabel("年龄："+userinfo.getAge());
+		lblAge.setBounds(14, 139, 166, 41);
 		contentPane.add(lblAge);
 		
-		JLabel lblSex = new JLabel("性别："+uinfo.getSex());
-		lblSex.setBounds(14, 293, 166, 33);
+		JLabel lblSex = new JLabel("性别："+userinfo.getSex());
+		lblSex.setBounds(14, 195, 166, 33);
 		contentPane.add(lblSex);
 		
-		JLabel lblDate = new JLabel("生日："+uinfo.getBirthday());
-		lblDate.setBounds(14, 384, 166, 33);
+		JLabel lblDate = new JLabel("生日："+userinfo.getBirthday());
+		lblDate.setBounds(14, 256, 166, 33);
 		contentPane.add(lblDate);
 		
-		JLabel lblAddress = new JLabel("地址："+uinfo.getAddress());
-		lblAddress.setBounds(14, 463, 154, 40);
+		JLabel lblAddress = new JLabel("地址："+userinfo.getAddress());
+		lblAddress.setBounds(14, 312, 154, 40);
 		contentPane.add(lblAddress);
 		
-		JLabel lblStar = new JLabel("星座："+uinfo.getStar());
-		lblStar.setBounds(14, 558, 166, 33);
+		JLabel lblStar = new JLabel("星座："+userinfo.getStar());
+		lblStar.setBounds(14, 365, 166, 33);
 		contentPane.add(lblStar);
 		
-		JButton btnEditor = new JButton("编辑资料");
-		btnEditor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JButton btnNewButton = new JButton("更改");
+		btnNewButton.setBounds(234, 365, 134, 33);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UserInfoWin.this.dispose();
+				new EditUserInfoWin(uid, list);
 			}
 		});
-		btnEditor.setForeground(Color.BLUE);
-		btnEditor.setBounds(409, 636, 113, 27);
-		contentPane.add(btnEditor);
+		contentPane.add(btnNewButton);
 		
-		JLabel lblEmail = new JLabel("邮编："+uinfo.getEmail());
-		lblEmail.setBounds(262, 467, 233, 33);
-		contentPane.add(lblEmail);
+		// 关闭信息更改界面时的监听事件
+		addWindowListener(new WindowAdapter() {  
+			public void windowClosing(WindowEvent e) {  
+				super.windowClosing(e);  
+				list.repaint();
+			 }  
+			});  
 	}
+
+
 }
+

@@ -23,4 +23,14 @@ public interface LoginInfoDao {
 	 * 根据用户id查找登录信息
 	 */
 	public LoginInfo findLoginInfoByUid(int uid);
+	
+	/**
+	 * 根据用户id更新登录信息
+	 * @param address
+	 * @param ip
+	 * @param time
+	 * @param uid
+	 * @return
+	 */
+	public boolean updateLoginInfo(String address, String ip, Date time, int uid);
 }

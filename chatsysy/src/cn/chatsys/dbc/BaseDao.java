@@ -18,7 +18,7 @@ import java.util.List;
 public class BaseDao {
 
 	private String driverclass = "com.mysql.jdbc.Driver";
-	private String url = "jdbc:mysql://192.168.0.134:3306/chatsys?characterencoding=UTF-8";
+	private String url = "jdbc:mysql://localhost:3306/chatsys?characterencoding=UTF-8";
 	private String username = "root";
 	private String password = "root";
 	

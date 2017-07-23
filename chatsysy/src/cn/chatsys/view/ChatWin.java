@@ -26,7 +26,16 @@ public class ChatWin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	
+	// 聊天消息发送状态
+	private boolean hasSend = false;
 
+	public boolean isHasSend() {
+		return hasSend;
+	}
+	public void setHasSend(boolean hasSend) {
+		this.hasSend = hasSend;
+	}
 	// 添加一个聊天实例：
 	private Chat chat;
 
@@ -63,7 +72,7 @@ public class ChatWin extends JFrame {
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//这里写发送信息所实现的东西
-				
+				ChatWin.this.hasSend = true;
 				//发送完消息后销毁textMySend里面的东西
 				
 				//功能我不怎么会，晚上写
@@ -104,11 +113,15 @@ public class ChatWin extends JFrame {
  * pro.du
  * 添加测试内容
  */
-editorPane.setText("呵呵呵呵呵呵呵呵呵呵呵");
 		editorPane.setBounds(14, 328, 416, 173);
 		contentPane.add(editorPane);
-		
+
 		JTextArea textArea = new JTextArea();
+/**
+ * pro.du
+ * 添加测试内容
+ */
+textArea.setText("");
 		textArea.setBounds(14, 13, 416, 263);
 		contentPane.add(textArea);
 		
@@ -148,6 +161,8 @@ editorPane.setText("呵呵呵呵呵呵呵呵呵呵呵");
 		LoginInfoDao lid = new LoginInfoDaoImpl();
 		LoginInfo mf = lid.findLoginInfoByUid(fid);
 		chat = new Chat(mf, this);
+		// 聊天
+		chat.goChat();
 		
 	}
 }

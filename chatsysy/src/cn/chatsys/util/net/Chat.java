@@ -35,9 +35,9 @@ public class Chat {
 	{
 		try {
 			// 发送信息, 统一使用10001端口
-			DatagramSocket sendSocket = new DatagramSocket(10001);
+			DatagramSocket sendSocket = new DatagramSocket();
 			// 接收信息, 统一使用10002端口
-			DatagramSocket receiveSocket = new DatagramSocket(10002);
+			DatagramSocket receiveSocket = new DatagramSocket(10001);
 			
 			// 开启发送接收消息的两个任务
 			Send send = new Send(sendSocket, this.cw, myFriendLoginInfo);

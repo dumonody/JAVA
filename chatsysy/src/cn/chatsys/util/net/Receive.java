@@ -36,7 +36,7 @@ public class Receive implements Runnable{
 			try {
 				ds.receive(dp);
 				String text = new String(dp.getData(), 0, dp.getLength(), "UTF-8");
-				WindowUtil.setJEditorPaneText(cw, text);
+				WindowUtil.setTextArea(cw, "\n" + text);;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

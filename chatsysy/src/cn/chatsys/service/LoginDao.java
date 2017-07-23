@@ -5,5 +5,11 @@ package cn.chatsys.service;
  *
  */
 public interface LoginDao {
+	/**
+	 * 登录功能，判断是否登录成功
+	 * @param loginName
+	 * @param password
+	 * @return
+	 */
 	public boolean Login(String loginName,String password);
 }

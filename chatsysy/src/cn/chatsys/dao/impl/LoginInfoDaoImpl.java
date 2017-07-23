@@ -35,11 +35,29 @@ public class LoginInfoDaoImpl implements LoginInfoDao {
 	@Override
 	public LoginInfo findLoginInfoByUid(int uid) {
 		
+		LoginInfo li = null;
 		List<Object> args = new ArrayList<Object>();
 		args.add(uid);
 		String sql = "select * from logininfo where uid=?";
-		LoginInfo li = (LoginInfo) base.query(sql, args, LoginInfo.class).get(0);
+		List<LoginInfo> list = base.query(sql, args, LoginInfo.class);
+		if(list != null && list.size() > 0)
+		{
+			li = list.get(0);
+		}
 		return li;
+	}
+
+	@Override
+	public boolean updateLoginInfo(String address, String ip, Date time, int uid) {
+		boolean flag = false;
+		String sql = "update logininfo set address=?, ip=?, time=? where uid=?";
+		List<Object> args = new ArrayList<Object>();
+		args.add(address);
+		args.add(ip);
+		args.add(time);
+		args.add(uid);
+		flag = base.update(sql, args);
+		return flag;
 	}
 
 }

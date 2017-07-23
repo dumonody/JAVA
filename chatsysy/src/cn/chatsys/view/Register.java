@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import cn.chatsys.dao.UserDao;
+import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.service.RegisterDao;
 import cn.chatsys.service.RegisterDaoImpl;
 import cn.chatsys.util.tips.Between;
@@ -17,12 +19,10 @@ import cn.chatsys.util.tips.Between;
 
 public class Register {
 	private static JFrame frame = new JFrame("注册");
-	public static void main(String[] args) {
-		new Register();
-	}
-	
+	private UserDao userdao = new UserDaoImpl();
 	public Register()
 	{
+		
 		JPanel panel = new JPanel();
 		frame.add(panel);//添加面板
 		placeComponents(panel);//调用用户定义的方法并添加组件到面板
@@ -91,10 +91,11 @@ public class Register {
 				}
 				else if(rd.register(loginName, password, password2))
 				{
+					int uid=userdao.findUserbyLoginName(loginName).getId();
 					frame.dispose();
-					LoginWin.frame.setVisible(true);
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					new LoginWin();
+					//LoginWin.frame.setVisible(true);
+					//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					new AddUserInfoWin(uid);
 				}
 				else
 				{

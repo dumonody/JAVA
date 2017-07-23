@@ -35,18 +35,41 @@ public class Send implements Runnable{
 	@Override
 	public void run() {
 
-		String text = WindowUtil.getJEditorPaneText(this.cw);
-		DatagramPacket dp = null;
-		byte[] buf;
-		try {
-			buf = text.getBytes("UTF-8");
-			dp = new DatagramPacket(buf, buf.length, InetAddress.getByName(myFriendLoginInfo.getIp()), 10001);
-			this.ds.send(dp);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			this.ds.close();
+		while(true)
+		{
+			// 如果发送了消息
+			if(cw.isHasSend() == true)
+			{
+				String text = WindowUtil.getJEditorPaneText(this.cw);
+System.out.println("发送的消息：" + text);
+				DatagramPacket dp = null;
+				byte[] buf;
+				try {
+					buf = text.getBytes("UTF-8");
+					dp = new DatagramPacket(buf, buf.length, InetAddress.getByName(myFriendLoginInfo.getIp()), 10001);
+					this.ds.send(dp);
+System.out.println("发送给："+ myFriendLoginInfo.getIp()+ "成功！");
+					// 下面是我现在聊天界面中的内容
+					WindowUtil.setTextArea(this.cw, "\n" + text);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+//				finally {
+//					this.ds.close();
+//				}
+				
+				// 恢复消息发送状态
+				cw.setHasSend(false);
+			}
+			
+			try {
+				// 休息50ms
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		
 		
 	}
 

@@ -1,6 +1,8 @@
 package cn.chatsys.view;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,20 +22,41 @@ import javax.swing.tree.TreeNode;
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.GroupDao;
 import cn.chatsys.dao.GroupMemDao;
+import cn.chatsys.dao.UserDao;
 import cn.chatsys.dao.UserInfoDao;
 import cn.chatsys.dao.impl.GroupDaoImpl;
 import cn.chatsys.dao.impl.GroupMemDaoImpl;
+import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
+
 
 public class List extends JFrame {
 
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTree friendList;
 	private JTree flockList;
+	
+	/**
+	 * pro.du
+	 * 常量
+	 * @param uid
+	 */
+	private int FINAL_UID;
+	private List FINAL_LIST;
+
+	public JPanel getMyContentPane() {
+		return contentPane;
+	}
+
+	public void setMyContentPane(JPanel contentPane) {
+		this.contentPane = contentPane;
+	}
 
 	public List(final int uid) {
+		FINAL_UID = uid;
+		FINAL_LIST = this;
+		final UserDao userdao = new UserDaoImpl();
 		UserInfo userinfo = new UserInfo();
 		UserInfoDao userinfodao = new UserInfoDaoImpl();
 		GroupDao groupdao = new GroupDaoImpl();
@@ -44,7 +67,7 @@ public class List extends JFrame {
 		setBounds(100, 100, 260, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JButton headButton = new JButton("");                                         //头像按钮
@@ -53,7 +76,7 @@ public class List extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				new UserInfoWin(uid);
+				new UserInfoWin(uid, List.this);
 			}
 		});
 		headButton.setBounds(14, 13, 48, 48);
@@ -73,13 +96,7 @@ public class List extends JFrame {
 		
 		//创建节点
 		DefaultMutableTreeNode node1=new DefaultMutableTreeNode("好友列表");
-		//DefaultMutableTreeNode node2=new DefaultMutableTreeNode("朋友");
-		//DefaultMutableTreeNode node3=new DefaultMutableTreeNode("好友列表");
-		//DefaultMutableTreeNode node4=new DefaultMutableTreeNode("好友");
-		//DefaultMutableTreeNode node5=new DefaultMutableTreeNode("同学");
-		//DefaultMutableTreeNode node6=new DefaultMutableTreeNode("亲戚");
-		//将节点添加至根节点node3
-		//node1.add(node2);
+
 		//创建对象接受节点
 		JTree friendList = new JTree(node1);
 		//设置大小
@@ -113,7 +130,8 @@ public class List extends JFrame {
 				//System.out.println(e.getPath().getPathCount());
 				if(node.isLeaf() && e.getPath().getPathCount()>2)
 				{
-					new ChatWin(uid);
+					int fid=userdao.findUserbyLoginName(node.toString()).getId();
+					new ChatWin(fid);
 				}
 			}
 		});
@@ -122,5 +140,24 @@ public class List extends JFrame {
 		scrollPane.setBounds(14, 100, 214, 200);
 		contentPane.add(scrollPane);
 		
+		
 	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		UserInfo userinfo = new UserInfo();
+		UserInfoDao userinfodao = new UserInfoDaoImpl();
+		userinfo=userinfodao.findUserInfoByUid(FINAL_UID);
+		Component[] components = FINAL_LIST.getMyContentPane().getComponents();
+		for(Component c : components)
+		{
+			if(c instanceof JButton)
+			{
+				((JButton) c).setIcon(new ImageIcon(userinfo.getAvatarpath()));
+			}
+		}
+		
+	}
+	
 }
