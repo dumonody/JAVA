@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import cn.chatsys.bean.UserInfo;
@@ -63,6 +64,8 @@ public class AddFriendTipsWin extends JFrame {
 				// 添加好友至数据库，不反馈消息
 				new AddFriendService().doFriend(uid, fid);
 				// 提示添加成功，并且关闭当前窗口
+				JOptionPane.showMessageDialog(null, "添加成功", "提示",JOptionPane.INFORMATION_MESSAGE);
+				AddFriendTipsWin.this.dispose();
 			}
 		});
 		
@@ -72,6 +75,7 @@ public class AddFriendTipsWin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 拒绝添加好友，不反馈消息
 				// 提示已经拒绝添加，并且关闭当前窗口
+				AddFriendTipsWin.this.dispose();
 			}
 		});
 		

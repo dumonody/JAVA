@@ -22,12 +22,12 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 	@Override
-	public Group findGroupById(int id) {
+	public Group findGroupById(int gid) {
 		
-		String sql = "select * from chatsys.Group where id=?";
+		String sql = "select * from chatsys.Group where gid=?";
 		List<Object> list = new ArrayList<Object>();
 		Group group = new Group();
-		list.add(id);
+		list.add(gid);
 		group=(Group) bs.query(sql, list, Group.class).get(0);
 		return group;
 		

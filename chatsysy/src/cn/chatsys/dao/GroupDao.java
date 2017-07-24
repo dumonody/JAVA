@@ -22,7 +22,7 @@ public interface GroupDao {
 	 * @param gid
 	 * @return
 	 */
-	public Group findGroupById(int id);
+	public Group findGroupById(int gid);
 	/**
 	 * 查找指定用户的分组
 	 * @param uid
