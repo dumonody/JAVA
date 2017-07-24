@@ -12,19 +12,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.UserInfoDao;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
+import cn.chatsys.util.tips.AddFriendRequest;
 
-public class FindUserWin extends JFrame {
+public class AddNewFriendWin extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	
-	public FindUserWin(int uid,final int fid) {
+	private int pUid;
+	private int pFid;
+	
+	
+	public AddNewFriendWin(int uid,final int fid) {
+		
+		pUid = uid;
+		pFid = fid;
+		
 		UserInfo userinfo = new UserInfo();
 		UserInfoDao uind = new UserInfoDaoImpl();
 		userinfo=uind.findUserInfoByUid(fid);
@@ -80,7 +90,11 @@ public class FindUserWin extends JFrame {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				
+				// 添加好友：
+				AddFriendRequest addFriendRequest = new AddFriendRequest();
+				addFriendRequest.SendAddFriendRequest(AddNewFriendWin.this.pUid, AddNewFriendWin.this.pFid);
+				JOptionPane.showMessageDialog(null, "已发送请求", "提示",JOptionPane.INFORMATION_MESSAGE);
+				AddNewFriendWin.this.dispose();
 			}
 		});
 		contentPane.add(btnNewButton);

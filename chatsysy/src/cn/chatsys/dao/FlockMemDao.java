@@ -38,4 +38,6 @@ public interface FlockMemDao {
 	 * @return
 	 */
 	public boolean delAllMemByFlockId(int flockId);
+	
+	public List<FlockMem> findFlockMemByUid(int uid);
 }

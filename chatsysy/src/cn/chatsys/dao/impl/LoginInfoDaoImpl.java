@@ -62,4 +62,18 @@ public class LoginInfoDaoImpl implements LoginInfoDao {
 		return flag;
 	}
 
+	@Override
+	public LoginInfo findLoginInfoByIP(String ip) {
+		LoginInfo li = null;
+		String sql = "select * from logininfo where ip=?";
+		List<Object> args = new ArrayList<Object>();
+		args.add(ip);
+		List<LoginInfo> list = base.query(sql, args, LoginInfo.class);
+		if(list != null && list.size()>0)
+		{
+			li = list.get(0);
+		}
+		return li;
+	}
+
 }

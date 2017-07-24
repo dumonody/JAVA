@@ -8,11 +8,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import cn.chatsys.bean.UserInfo;
 import cn.chatsys.dao.UserInfoDao;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
+import cn.chatsys.service.AddFriendService;
 import cn.chatsys.view.FindUserWin_2;
 
 public class AddFriendTipsWin extends JFrame {
@@ -28,7 +28,7 @@ public class AddFriendTipsWin extends JFrame {
 	private JButton no;//拒绝按钮
 	private JButton avatar;//头像按钮
 	private JLabel name;//用户账号名
-	private JTextField remark;
+	private JLabel remark;
 	
 	private UserInfoDao userInfoDao;
 	private UserInfo userInfo;
@@ -36,10 +36,10 @@ public class AddFriendTipsWin extends JFrame {
 	public static void main(String[] args) {
 		int uid = 1;
 		int fid = 1;
-		new AddFriendTipsWin(uid,fid);
+		new AddFriendTipsWin(uid,fid, null);
 	}
 	
-	public AddFriendTipsWin(final int uid,final int fid)
+	public AddFriendTipsWin(final int uid,final int fid, String text)
 	{
 		userInfo = new UserInfo();
 		userInfoDao = new UserInfoDaoImpl();
@@ -58,14 +58,27 @@ public class AddFriendTipsWin extends JFrame {
 		
 		yes = new JButton("同意");
 		yes.setBounds(12, 92, 112, 24);
+		yes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 添加好友至数据库，不反馈消息
+				new AddFriendService().doFriend(uid, fid);
+				// 提示添加成功，并且关闭当前窗口
+			}
+		});
 		
 		no = new JButton("拒绝");
 		no.setBounds(136, 92, 112, 24);
+		no.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// 拒绝添加好友，不反馈消息
+				// 提示已经拒绝添加，并且关闭当前窗口
+			}
+		});
 		
 		name = new JLabel(userInfo.getNickname());
 		name.setBounds(72, 12, 188, 24);
 		
-		remark = new JTextField();
+		remark = new JLabel(text);
 		remark.setBounds(72, 48, 176, 24);
 		
 		panel.add(avatar);

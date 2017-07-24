@@ -19,7 +19,7 @@ import cn.chatsys.dao.UserInfoDao;
 import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 
-public class AddFriendWin extends JFrame {
+public class SearchUserWin extends JFrame {
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class AddFriendWin extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddFriendWin(final int uid) {
+	public SearchUserWin(final int uid) {
 		final int uidflag =  uid;
 		setVisible(true);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,19 +76,8 @@ public class AddFriendWin extends JFrame {
 				{
 					//AddFriendWin.this.dispose();
 					user=userDao.findUserbyLoginName(s);
-					new FindUserWin(uid,user.getId());
-					//userInfo = userInfoDao.findUserInfoByUid(user.getId());
-					//Object[][] tableuserInfo ={ {"账号",user.getLoginName(),"昵称",userInfo.getNickname()}};
-					//JTable table = new JTable(tableuserInfo,names);
-					//lblFriendLoginName = new JButton(user.getLoginName());
-					//lblFriendLoginName.setName(user.getLoginName());
-					//lblFriendLoginName.setBounds(14, 69*i, 308, 32);
-					//contentPane.add(lblFriendLoginName);
-		
-					//btnAddFriend = new JButton("添加");
-					//btnAddFriend.setBounds(336, 68, 113, 32);
-					//contentPane.add(btnAddFriend);
-					
+					new AddNewFriendWin(uid,user.getId());
+	
 				}
 				else
 				{

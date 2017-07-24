@@ -13,17 +13,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import cn.chatsys.bean.LoginInfo;
 import cn.chatsys.bean.User;
 import cn.chatsys.bean.UserInfo;
-import cn.chatsys.dao.LoginInfoDao;
 import cn.chatsys.dao.UserDao;
 import cn.chatsys.dao.UserInfoDao;
-import cn.chatsys.dao.impl.LoginInfoDaoImpl;
 import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 import cn.chatsys.util.net.Chat;
-import cn.chatsys.util.win.WindowUtil;
 
 /**
  * 
@@ -35,6 +31,8 @@ public class ChatWin extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JScrollPane rollpane;
+	
+	private UserInfoDao userinfodao;
 	
 	// 聊天对象
 	private Chat chat;
@@ -61,14 +59,16 @@ public class ChatWin extends JFrame {
 	 */
 	public ChatWin(int fid, int uid) {
 		UserDao ud = new UserDaoImpl();
+		userinfodao = new UserInfoDaoImpl();
+		UserInfo a = new UserInfo();
+		a = userinfodao.findUserInfoByUid(fid);
 		
 		User friend = new User();	// 好友对象
 		friend=ud.findUserById(fid);
 		
 		User user = new User();	// 用户对象
 		user = ud.findUserById(uid);
-		
-		
+
 		/**
 		 * pro.du
 		 * 创建聊天
@@ -136,42 +136,43 @@ public class ChatWin extends JFrame {
 		});
 		btnHistory.setBounds(298, 289, 132, 27);
 		contentPane.add(btnHistory);
-// 发送区域	
+		// 发送区域	
 		JEditorPane editorPane = new JEditorPane();
 		editorPane.setBounds(14, 328, 416, 173);
 		contentPane.add(editorPane);
-//显示区域：添加滚动容器rollpane
+		//显示区域：添加滚动容器rollpane
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(14, 52, 416, 263);
+		textArea.setEditable(false);
 		rollpane=new JScrollPane(textArea);
 		rollpane.setBounds(14, 13, 406, 253);
 		contentPane.add(rollpane);
 		
-		JLabel lblNewLabel_1 = new JLabel("昵称：");
+		JLabel lblNewLabel_1 = new JLabel("昵称："+friend.getLoginName());
 		lblNewLabel_1.setBounds(444, 64, 269, 32);
 		contentPane.add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("年龄：");
+		JLabel lblNewLabel_2 = new JLabel("年龄："+a.getAge());
 		lblNewLabel_2.setBounds(444, 117, 269, 32);
 		contentPane.add(lblNewLabel_2);
 		
-		JLabel lblNewLabel_3 = new JLabel("性别：");
+		JLabel lblNewLabel_3 = new JLabel("性别："+a.getSex());
 		lblNewLabel_3.setBounds(444, 177, 269, 32);
 		contentPane.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_4 = new JLabel("生日：");
+		JLabel lblNewLabel_4 = new JLabel("生日："+a.getBirthday());
 		lblNewLabel_4.setBounds(444, 232, 269, 32);
 		contentPane.add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_5 = new JLabel("地址：");
+		JLabel lblNewLabel_5 = new JLabel("地址："+a.getAddress());
 		lblNewLabel_5.setBounds(444, 286, 269, 32);
 		contentPane.add(lblNewLabel_5);
 		
-		JLabel lblNewLabel_6 = new JLabel("星座：");
+		JLabel lblNewLabel_6 = new JLabel("星座："+a.getStar());
 		lblNewLabel_6.setBounds(444, 343, 269, 26);
 		contentPane.add(lblNewLabel_6);
 		
-		JLabel lblNewLabel_7 = new JLabel("邮编：");
+		JLabel lblNewLabel_7 = new JLabel("邮编："+a.getEmail());
 		lblNewLabel_7.setBounds(444, 401, 269, 32);
 		contentPane.add(lblNewLabel_7);
 	}

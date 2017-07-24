@@ -54,4 +54,19 @@ public class FriendListDaoImpl implements FriendListDao {
 		return bs.query(sql, list, FriendList.class);
 	}
 
+	@Override
+	public FriendList findFriendByUidAndFid(int fid, int uid) {
+		FriendList friendList = new FriendList();
+		friendList = null;
+		List<Object> list = new ArrayList<Object>();
+		String sql = "select * from friendlist where fid=? and uid=?";
+		list.add(fid);
+		list.add(uid);
+		if(bs.query(sql, list, FriendList.class).size()>0)
+		{
+			friendList = (FriendList) bs.query(sql, list, FriendList.class).get(0);
+		}
+		return friendList;
+	}
+
 }

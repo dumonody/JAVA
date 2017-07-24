@@ -59,4 +59,14 @@ public class FlockMemDaoImpl implements FlockMemDao {
 		return isFlag;
 	}
 
+	@Override
+	public List<FlockMem> findFlockMemByUid(int uid) {
+		List<FlockMem> list = new ArrayList<FlockMem>();
+		List<Object> obj = new ArrayList<Object>();
+		String sql = "select * from flockmem where uid=?";
+		obj.add(uid);
+		list=base.query(sql, obj, FlockMem.class);
+		return list;
+	}
+
 }

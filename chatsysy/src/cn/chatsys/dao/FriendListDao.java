@@ -32,5 +32,13 @@ public interface FriendListDao {
 	 * @return
 	 */
 	public List<FriendList> findAllFriendList(int uid); 
+	
+	/**
+	 * 查找用户好友列表中的某个好友
+	 * @param fid
+	 * @param uid
+	 * @return
+	 */
+	public FriendList findFriendByUidAndFid(int fid,int uid);
 }
 
