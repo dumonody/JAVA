@@ -84,7 +84,7 @@ public class AddUserInfoWin extends JFrame {
 		lblStarEdit.setBounds(14, 387, 72, 18);
 		contentPane.add(lblStarEdit);
 		
-		JLabel lblEmailEdit = new JLabel("邮编：");
+		JLabel lblEmailEdit = new JLabel("电子邮件：");
 		lblEmailEdit.setBounds(14, 429, 72, 30);
 		contentPane.add(lblEmailEdit);
 		

@@ -49,4 +49,18 @@ public class GroupMemDaoImpl implements GroupMemDao {
 		return ansList;
 	}
 
+	@Override
+	public List<GroupMem> findAllGroupMemListByGid(int gid) {
+		List<GroupMem> groupMemList = new ArrayList<GroupMem>();
+		groupMemList=null;
+		List<Object> list = new ArrayList<Object>();
+		String sql = "select * from groupmem where gid=?";
+		list.add(gid);
+		if(bs.query(sql, list, GroupMem.class).size()>0)
+		{
+			groupMemList = bs.query(sql, list, GroupMem.class);
+		}
+		return groupMemList;
+	}
+
 }

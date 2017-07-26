@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import cn.chatsys.bean.ChatPort;
 import cn.chatsys.bean.LoginInfo;
@@ -96,13 +97,22 @@ public class Send implements Runnable{
 
 		while(!cw.isEndChat())
 		{
+			
+			
 			// 如果发送了消息
 			if(cw.isHasSend() == true)
 			{
+				// 发送人：
+				String username = user.getLoginName();
+				// 发送时间：
+				String time = new Date().toLocaleString();
+				String sendUserInfo = username + "(" + time + "):\n";
+				
+				
 				// 如果用户打开了窗口
 				if(!this.friendNoOpenWin)
 				{
-					String text = WindowUtil.getJEditorPaneText(this.cw);
+					String text = sendUserInfo + WindowUtil.getJEditorPaneText(this.cw);
 					System.out.println("发送的消息：" + text);
 					DatagramPacket dp = null;
 					byte[] buf;
@@ -122,7 +132,7 @@ public class Send implements Runnable{
 				else {
 					// 如果用户没有打开窗口
 					// 发送一个特殊的包
-					String text = WindowUtil.getJEditorPaneText(this.cw);
+					String text = sendUserInfo + WindowUtil.getJEditorPaneText(this.cw);
 					System.out.println("发送的消息：" + text);
 					
 					// 发送新的会话请求

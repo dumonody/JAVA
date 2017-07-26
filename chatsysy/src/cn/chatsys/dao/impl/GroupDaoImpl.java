@@ -66,4 +66,18 @@ public class GroupDaoImpl implements GroupDao {
 		return isflag;
 	}
 
+	@Override
+	public Group findGroupByGroupName(String name) {
+		Group group = new Group();
+		group = null;
+		String sql = "select * from chatsys.Group where groupname=?";
+		List<Object> list = new ArrayList<Object>();
+		list.add(name);
+		if(bs.query(sql, list, Group.class).size()>0)
+		{
+			group=(Group) bs.query(sql, list, Group.class).get(0);
+		}
+		return group;
+	}
+
 }

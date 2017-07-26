@@ -2,6 +2,7 @@ package cn.chatsys.dao;
 
 import java.util.List;
 
+import cn.chatsys.bean.GroupMem;
 import cn.chatsys.bean.User;
 /**
  * 这是分组成员的接口层
@@ -30,4 +31,10 @@ public interface GroupMemDao {
 	 * @return
 	 */
 	public List<User> findAllGroupMemByGid(int gid);
+	/**
+	 * 查找分组成员列表通过分组id
+	 * @param gid
+	 * @return
+	 */
+	public List<GroupMem> findAllGroupMemListByGid(int gid);
 }

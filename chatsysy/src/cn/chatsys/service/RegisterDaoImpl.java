@@ -2,8 +2,10 @@ package cn.chatsys.service;
 
 import cn.chatsys.bean.User;
 import cn.chatsys.bean.UserInfo;
+import cn.chatsys.dao.GroupDao;
 import cn.chatsys.dao.UserDao;
 import cn.chatsys.dao.UserInfoDao;
+import cn.chatsys.dao.impl.GroupDaoImpl;
 import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 
@@ -25,6 +27,8 @@ public class RegisterDaoImpl implements RegisterDao {
 				user=userdao.findUserbyLoginName(loginName);
 				u.setUser(user);
 				userInfo.doUserInfo(u);
+				GroupDao groupDao= new GroupDaoImpl();
+				groupDao.doGroup(userdao.findUserbyLoginName(loginName).getId(), "好友列表");
 				
 			}
 		}

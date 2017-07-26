@@ -41,5 +41,9 @@ public interface GroupDao {
 	 * @return
 	 */
 	public boolean delGroup(int id );
+	/**
+	 * 根据组名找到分组id
+	 */
+	public Group findGroupByGroupName(String name); 
 	
 }

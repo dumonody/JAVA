@@ -1,7 +1,9 @@
 package cn.chatsys.view;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +33,11 @@ public class Register {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//设置关闭窗口后的默认操作
 		frame.setVisible(true);//参数为true时设置窗口可见
 		frame.setResizable(false);//设置框架为不可调整大小
+		/**
+		 * 加的东西
+		 */
+		Image title=new ImageIcon("avatar\\111.jpg").getImage();
+		frame.setIconImage(title);
 	}
 	
 	private void placeComponents(final JPanel panel) {
@@ -106,7 +113,13 @@ public class Register {
 		};
 		registerButton.addActionListener(al);
 		panel.add(registerButton);
-        
+		/**
+		 * 改动部分
+		 */
+		ImageIcon background=new ImageIcon("avatar\\111.jpg");
+		JLabel lblBackGround = new JLabel(background);
+		lblBackGround.setBounds(0, 0, 395, 270);
+		panel.add(lblBackGround);//背景图片
 	}
 	
 }

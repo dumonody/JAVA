@@ -48,7 +48,7 @@ public class SearchUserWin extends JFrame {
 		final int uidflag =  uid;
 		setVisible(true);
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(1100, 600, 260,100);
+		setBounds(100, 200, 260,100);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

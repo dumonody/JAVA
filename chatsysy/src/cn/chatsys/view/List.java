@@ -45,6 +45,7 @@ import cn.chatsys.dao.impl.UserDaoImpl;
 import cn.chatsys.dao.impl.UserInfoDaoImpl;
 import cn.chatsys.util.eventListener.GetAddFriendRequestListener;
 import cn.chatsys.util.eventListener.GetNewChatRequestListener;
+import cn.chatsys.util.eventListener.ReFreshOnTime;
 /**
  * 
  * @author LH
@@ -91,7 +92,8 @@ public class List extends JFrame{
 	private LoginInfoDao loginInfoDao;
 	private FlockDao flockdao;
 	
-
+	DefaultMutableTreeNode node1;
+	DefaultMutableTreeNode group;
 	
 	public JPanel getJp11() {
 		return jp11;
@@ -109,7 +111,7 @@ public class List extends JFrame{
         init(uid);// 窗体组件初始化
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //this.setLayout(null);// 设置布局方式 
-        this.setBounds(1100, 100, 260, 600);//窗体位置
+        this.setBounds(100, 100, 260, 600);//窗体位置
         Image image = new ImageIcon("e:/001.jpg").getImage();// 设置窗体的标题图标
         this.setIconImage(image);
         this.setResizable(true);// 窗体大小不能改变
@@ -133,14 +135,14 @@ public class List extends JFrame{
         // 给List添加一个好友新会话请求事件监测
         Thread gncrl = new Thread(new GetNewChatRequestListener(this.FINAL_UID));
         gncrl.start();
-        // 设置成后台线程
-        //gncrl.setDaemon(true);
         
         // 给List添加一个添加好友请求事件监测
         Thread gafrl = new Thread(new GetAddFriendRequestListener(this.FINAL_UID));
         gafrl.start();
-        // 设置成后台线程
-       // gncrl.setDaemon(true);
+        
+        // 给List添加一个定时刷新事件
+        new ReFreshOnTime(this).start();;
+
 	}
 	
 	public void init(final int uid){
@@ -201,15 +203,18 @@ public class List extends JFrame{
 		JTabbedPane tab = new JTabbedPane(JTabbedPane.TOP); 
 		
 		int groupnum=groupdao.findGroupByUid(uid).size();
-		DefaultMutableTreeNode node1=new DefaultMutableTreeNode("我的好友");
+		node1=new DefaultMutableTreeNode("我的好友");
+		
+		// 找分组
 		for(int i=1;i<=groupnum;i++)
 		{
-			DefaultMutableTreeNode group = new DefaultMutableTreeNode(groupdao.findGroupByUid(uid).get(i-1).getGroupname());
+			group = new DefaultMutableTreeNode(groupdao.findGroupByUid(uid).get(i-1).getGroupname());
 			node1.add(group);
 			int gid = groupdao.findGroupByUid(uid).get(i-1).getId();
 			int gnum=groupmemdao.findAllGroupMemByGid(gid).size();
 			if(gnum>0)
 			{
+				// 找成员
 				for(int j=1;j<=gnum;j++)
 				{
 					
@@ -223,7 +228,7 @@ public class List extends JFrame{
 		}
 		DefaultTreeModel jMode = new DefaultTreeModel(node1);
 		friendList= new JTree(jMode);
-		//jt1.setRootVisible(false);// 设置根节点为不可见；
+		friendList.setRootVisible(false);// 设置根节点为不可见；
 		friendList.putClientProperty("JTree.lineStyle", "Horizontal");// 将树设为水平分隔风格
 		friendList.setBounds(0, 0, 150, 20);
 		friendList.addTreeSelectionListener(new TreeSelectionListener() {
@@ -365,6 +370,7 @@ public class List extends JFrame{
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
+		// 刷新头像
 		UserInfo userinfo = new UserInfo();
 		UserInfoDao userinfodao = new UserInfoDaoImpl();
 		userinfo=userinfodao.findUserInfoByUid(FINAL_UID);
@@ -376,6 +382,10 @@ public class List extends JFrame{
 				((JButton) c).setIcon(new ImageIcon(userinfo.getAvatarpath()));
 			}
 		}
-		
+	
+		// 重新布局
+		FINAL_LIST.invalidate();
+		FINAL_LIST.validate();
+
 	}
 }

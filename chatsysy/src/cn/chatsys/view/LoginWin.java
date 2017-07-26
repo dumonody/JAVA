@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,16 +19,22 @@ import cn.chatsys.service.LoginDao;
 import cn.chatsys.service.LoginDaoImpl;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 
 public class LoginWin {
 	private static LoginWin lo = new LoginWin();
-	static JFrame frame = new JFrame("登录");
+	static JFrame frame = new JFrame("星聊");
 	private JLabel lblNewLabel = new JLabel();
-
+	
 	public static void main(String[] args) {
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel);// 添加面板
 		lo.placeComponents(panel);// 调用用户定义的方法并添加组件到面板
+		/**
+		 * 加的东西
+		 */
+		Image title=new ImageIcon("avatar\\111.jpg").getImage();
+		frame.setIconImage(title);
 		
 		
 		frame.setSize(395, 270);// 窗口的大小
@@ -38,6 +45,8 @@ public class LoginWin {
 	}
 
 	private void placeComponents(final JPanel panel) {
+		
+		
 		lblNewLabel.setFont(new Font("宋体", Font.ITALIC, 18));
 		lblNewLabel.setForeground(Color.RED);
 		lblNewLabel.setBounds(122, 143, 174, 18);
@@ -104,6 +113,20 @@ public class LoginWin {
 		};
 		registerButton.addActionListener(re);
 		panel.add(registerButton);
+		/**
+		 * 改动部分
+		 */
+		ImageIcon background=new ImageIcon("avatar\\111.jpg");
+		JLabel lblBackGround = new JLabel(background);
+		lblBackGround.setBounds(0, 0, 395, 270);
+		panel.add(lblBackGround);//背景图片
+		
+		
+		
+		
+		/**
+		 * 
+		 */
 	}
 	
 }

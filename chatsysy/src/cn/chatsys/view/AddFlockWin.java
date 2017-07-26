@@ -12,15 +12,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import cn.chatsys.bean.Group;
+import cn.chatsys.bean.Flock;
 
-import cn.chatsys.dao.FriendListDao;
-import cn.chatsys.dao.GroupDao;
+import cn.chatsys.dao.FlockDao;
 
-import cn.chatsys.dao.impl.GroupDaoImpl;
+import cn.chatsys.dao.impl.FlockDaoImpl;
 
 
-public class AddGroupWin extends JFrame {
+
+public class AddFlockWin extends JFrame {
 
 	/**
 	 * 
@@ -28,14 +28,28 @@ public class AddGroupWin extends JFrame {
 	private static final long serialVersionUID = -7659681364568562888L;
 	private JPanel contentPane;
 	private JTextField textGRoupName;
-	public AddGroupWin(final int uid) {
+	
+	private Flock flock;
+
+	/**
+	 * Launch the application.
+	 */
+
+
+	/**
+	 * Create the frame.
+	 */
+	public AddFlockWin(final int uid) {
 		setVisible(true);
-		setBounds(100, 300, 260,100);
+		
+		setBounds(100, 600, 260,100);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		 
 		
 		textGRoupName = new JTextField();
 		textGRoupName.setBounds(14, 5, 150, 30);
@@ -45,19 +59,19 @@ public class AddGroupWin extends JFrame {
 		JButton btnAddGroup = new JButton("添加");
 		btnAddGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Group();
+				flock = new Flock();
 				
-				GroupDao groupDao = new GroupDaoImpl();
+				FlockDao flockDao = new FlockDaoImpl();
 				
 				String s = textGRoupName.getText();
 				
-				boolean isFlag=groupDao.doGroup(uid, s);
+				boolean isFlag=flockDao.doFlock(uid, s);
 				
 										
 				if(isFlag) {
 					JOptionPane.showMessageDialog(null, "添加成功", "提示",JOptionPane.INFORMATION_MESSAGE);
 				}
-				AddGroupWin.this.dispose();
+				
 			}
 		});
 		btnAddGroup.setBounds(164, 5, 60, 30);
@@ -67,3 +81,4 @@ public class AddGroupWin extends JFrame {
 	}
 	
 }
+

@@ -52,7 +52,7 @@ public class FriendChatTipsWin extends JFrame {
 		panel.setLayout(null);
 		frame.add(panel);//添加面板
 		frame.setSize(260, 150);//窗口的大小
-		frame.setLocation(1100, 550);//设置窗口左上角的坐标
+		frame.setLocation(100, 550);//设置窗口左上角的坐标
 		frame.setVisible(true);//参数为true时设置窗口可见
 		frame.setResizable(false);//设置框架为不可调整大小
 		
