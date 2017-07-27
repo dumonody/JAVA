@@ -1,0 +1,5 @@
+Java内置的观察者的被依赖方是Observable   是类！！！
+
+Observable这个类中已经实现了对依赖者Observer的添加、删除、通知功能
+
+而Observer这个观察者接口中，有未实现的方法update()。

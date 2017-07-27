@@ -1,0 +1,16 @@
+观察者模式就像订牛奶业务
+	1）奶站，Subject
+	2）用户，Observer   (用户就是观察者)
+	
+Subject:登记注册用户、移除用户、通知用户
+		registerObserver()
+		removeObserver()
+		notifyObservers()
+
+Observer：接收奶站的消息
+		update()
+		
+观察者模式：对象之间多对一依赖的一种设计方案，
+	被依赖的对象为Subject
+	依赖的对象为Observer(观察者)
+	由Subject来通知Observer变化！！
