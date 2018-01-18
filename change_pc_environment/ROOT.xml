@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<all-env>
+	<env>
+		<env-load>true</env-load>
+		<env-disc>学习环境</env-disc>
+		<env-name>study.xml</env-name>
+	</env>
+	<env>
+		<env-load>false</env-load>
+		<env-disc>游戏环境</env-disc>
+		<env-name>study2.xml</env-name>
+	</env>
+	<env>
+		<env-load>false</env-load>
+		<env-disc>呵呵环境</env-disc>
+		<env-name>study3.xml</env-name>
+	</env>
+</all-env>

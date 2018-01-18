@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<task>
+	<task-item>
+		<task-start>
+			<if-exec>true</if-exec>
+			<task-disc>打开腾讯QQ</task-disc>
+			<command>C:/Program Files (x86)/Tencent/QQ/Bin/QQScLauncher.exe</command>
+		</task-start>
+		<task-stop>
+			<if-exec>true</if-exec>
+			<task-disc>关闭腾讯QQ</task-disc>
+			<command>Taskkill /F /IM QQ.exe /T</command>
+		</task-stop>
+	</task-item>
+
+	<task-item>
+		<task-start>
+			<if-exec>true</if-exec>
+			<task-disc>开启mysql服务</task-disc>
+			<command>net start mysql</command>
+		</task-start>
+		<task-stop>
+			<if-exec>true</if-exec>
+			<task-disc>关闭mysql服务</task-disc>
+			<command>net stop mysql</command>
+		</task-stop>
+	</task-item>
+</task>
